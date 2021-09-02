@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2021 Robin Vobruba <hoijui.quaero@gmail.com>
+#
+# SPDX-License-Identifier: Unlicense
+
+# Exit immediately on each error and unset variable;
+# see: https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+#set -Eeu
+
+function print_help() {
+
+	echo "Fetches the latest release version Nim(lang) from the github repo."
+	echo "Echos for example: 1.4.8"
+	echo
+	echo "Usage:"
+	echo "         $(basename "$0") [OPTIONS]"
+	echo "Options:"
+	echo "          -h, --help                  Show this help message"=
+}
+
+# read command-line args
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+	arg="$1"
+	shift # past argument
+
+	case "$arg" in
+		-h|--help)
+			print_help
+			exit 0
+			;;
+		*) # non-/unknown option
+			POSITIONAL+=("$arg") # save it in an array for later
+			;;
+	esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+NIM_GITHUB_REPO='nim-lang/Nim'
+curl -Ssf "https://github.com/$NIM_GITHUB_REPO/releases" \
+	--output 'nim_releases.html'
+NIM_VERSION="$( \
+	grep -m1 -Eo 'archive/refs/tags/[^/]+\.tar\.gz' \
+		< 'nim_releases.html' \
+		| sed -e 's|.*/v\?||g' -e 's|.tar.gz$||g')"
+rm 'nim_releases.html'
+
+if [ -z "$NIM_VERSION" ]
+then
+	echo "ERROR: Failed fetching latest nim version."
+	exit 1
+fi
+
+echo -n "$NIM_VERSION"
