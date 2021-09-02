@@ -15,10 +15,16 @@ jobs:
     steps:
       - name: Get latest Nim version
         run: |
+          curl -Ssf 'https://github.com/nim-lang/Nim/releases' --output nim_releases.html
           export NIM_VERSION="$( \
-            curl -s 'https://github.com/nim-lang/Nim/releases' | \
+            cat nim_releases.html | \
             grep -m1 -Eo 'archive/refs/tags/[^/]+\.tar\.gz' | \
             sed -e 's|.*/v\?||g' -e 's|.tar.gz$||g')"
+          echo "NIM_VERSION=\"$NIM_VERSION\""
+          if [ -z "$NIM_VERSION" ]
+          then
+            exit 1
+          fi
       - name: Check out the repo
         uses: actions/checkout@v2
 
@@ -38,7 +44,7 @@ jobs:
           pull: true
           push: true
           build-args: |
-            NIM_WIN_VERSION="$NIM_WIN_VERSION"
+            NIM_VERSION=${NIM_VERSION}
           cache-from: type=registry,ref=hoijui/nim-ci:latest
           cache-to: type=inline
           tags: hoijui/nim-ci:latest

@@ -7,12 +7,19 @@ FROM debian:latest
 ENV WORKDIR="$HOME"
 WORKDIR "$WORKDIR"
 
+ARG NIM_VERSION "1.4.x"
+ENV NV="$NIM_VERSION"
+
+RUN echo "xxx NIM_VERSION=$NV"
+RUN exit 1
+
 RUN apt-get update
 
 RUN apt-get install --no-install-recommends -y -qq \
 	cpio \
 	wget \
 	curl \
+	ca-certificates \
 	git \
 	ccache \
 	build-essential \
@@ -29,7 +36,7 @@ RUN sh choosenim_init.sh -y
 # This can be set from outside,
 # for exampel on the command line with:
 # docker build --build-arg NIM_VERSION=some_value # ... the rest of the build command is omitted
-ARG NIM_VERSION "1.4.8"
+# ARG NIM_VERSION "1.4.8"
 
 # Downloads and extracts the win64 version of nim.
 # We need this for some DLL dependencies at runtime
