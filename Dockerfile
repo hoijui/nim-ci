@@ -8,7 +8,10 @@ ARG HOME="/root"
 RUN pwd
 
 RUN apt-get update
-RUN apt-get install --no-install-recommends -y -qq \
+RUN apt-get install \
+	--no-install-recommends \
+	-y \
+	-qq \
 	curl \
 	zip \
 	unzip \
@@ -20,8 +23,9 @@ RUN apt-get install --no-install-recommends -y -qq \
 ARG WORK_DIR="$HOME"
 WORKDIR "$WORK_DIR"
 
-# Download and execute ChooseNim
-# (installs latest version of nim, nimble and some other basic nim tools)
+# Download and execute ChooseNim.
+# It installs latest version of nim, nimble
+# and some other basic Nim tools.
 RUN curl "https://nim-lang.org/choosenim/init.sh" \
 	--output "choosenim_init.sh" \
 	-sSf
@@ -33,7 +37,6 @@ ENV PATH="$NIM_BINS:${PATH}"
 # for example on the command line with:
 # docker build . --build-arg NIM_VERSION=some_value # ... the rest of the build command is omitted
 # NOTE This is replaced by the 'inject-dockerfile' script.
-# ARG NIM_VERSION="1.4.8"
 ARG NIM_VERSION="1.4.x"
 
 # Downloads and extracts the win64 version of nim.
@@ -42,10 +45,6 @@ ARG NIM_VERSION="1.4.x"
 ARG NIM_WIN_VERSION=$NIM_VERSION
 ARG NIM_WIN_DIR="nim-${NIM_WIN_VERSION}-win64"
 ARG NIM_WIN_ARCH="nim-${NIM_WIN_VERSION}_x64.zip"
-RUN echo "NIM_VERSION=$NIM_VERSION"
-RUN echo "NIM_WIN_VERSION=$NIM_WIN_VERSION"
-RUN echo "NIM_WIN_DIR=$NIM_WIN_DIR"
-RUN echo "NIM_WIN_ARCH=$NIM_WIN_ARCH"
 RUN curl "https://nim-lang.org/download/$NIM_WIN_ARCH" \
 		--output "$NIM_WIN_ARCH" \
 		-sSf
@@ -55,6 +54,8 @@ RUN mv "nim-${NIM_WIN_VERSION}" "$NIM_WIN_DIR"
 # Make these available to the user of the docker image
 ENV NIM_WIN_VERSION=$NIM_WIN_VERSION
 ENV NIM_WIN_DIR="$WORK_DIR/$NIM_WIN_DIR"
+RUN echo "Installed win64 Nim version: NIM_WIN_VERSION=$NIM_WIN_VERSION"
+RUN echo "Installed win64 Nim dir:     NIM_WIN_DIR='$NIM_WIN_DIR'"
 
 LABEL maintainer="Robin Vobruba <hoijui.quaero@gmail.com>"
 LABEL version="0.1.0"
