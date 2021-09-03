@@ -9,15 +9,18 @@
 set -Eeuo pipefail
 #set -Eeu
 
+APP_NAME="Nim Version Fetcher"
+
 function print_help() {
 
-	echo "Fetches the latest release version Nim(lang) from the github repo."
+	script_name="$(basename "$0")"
+	echo "$APP_NAME - Fetches the latest release version Nim(lang) from the github repo."
 	echo "Echos for example: 1.4.8"
 	echo
 	echo "Usage:"
-	echo "         $(basename "$0") [OPTIONS]"
+	echo "  $script_name [OPTIONS]"
 	echo "Options:"
-	echo "          -h, --help                  Show this help message"=
+	echo "  -h, --help              Show this usage info and exit"
 }
 
 # read command-line args
@@ -25,7 +28,7 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 	arg="$1"
-	shift # past argument
+	shift # past arg
 
 	case "$arg" in
 		-h|--help)
@@ -50,7 +53,7 @@ rm 'nim_releases.html'
 
 if [ -z "$NIM_VERSION" ]
 then
-	echo "ERROR: Failed fetching latest nim version."
+	>&2 echo "ERROR: Failed fetching latest nim version."
 	exit 1
 fi
 

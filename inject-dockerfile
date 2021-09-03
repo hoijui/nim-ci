@@ -11,14 +11,17 @@ set -Eeuo pipefail
 
 script_dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 
+APP_NAME="Dockerfile Variable Injector"
+
 function print_help() {
 
-	echo "Get latest Nim version and inject it into Dockerfile_REPLACED"
+	script_name="$(basename "$0")"
+	echo "$APP_NAME - Get latest Nim version and inject it into Dockerfile_REPLACED"
 	echo
 	echo "Usage:"
-	echo "         $(basename "$0") [OPTIONS]"
+	echo "         $script_name [OPTIONS]"
 	echo "Options:"
-	echo "          -h, --help                  Show this help message"=
+	echo "  -h, --help              Show this usage info and exit"
 }
 
 # read command-line args
@@ -26,7 +29,7 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 	arg="$1"
-	shift # past argument
+	shift # past arg
 
 	case "$arg" in
 		-h|--help)
