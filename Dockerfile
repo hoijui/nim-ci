@@ -6,15 +6,13 @@ FROM debian:latest
 
 ARG HOME="/root"
 RUN pwd
-# ARG WORK_DIR="$HOME"
-# WORKDIR "$WORK_DIR"
 
 RUN apt-get update
-
 RUN apt-get install --no-install-recommends -y -qq \
 	cpio \
 	wget \
 	curl \
+	zip \
 	unzip \
 	ca-certificates \
 	git \
@@ -22,6 +20,9 @@ RUN apt-get install --no-install-recommends -y -qq \
 	build-essential \
 	mingw-w64 \
 	pkg-config-mingw-w64-x86-64
+
+ARG WORK_DIR="$HOME"
+WORKDIR "$WORK_DIR"
 
 # Download and execute ChooseNim
 # (installs latest version of nim, nimble and some other basic nim tools)
@@ -57,7 +58,7 @@ RUN mv "nim-${NIM_WIN_VERSION}" "$NIM_WIN_DIR"
 
 # Make these available to the user of the docker image
 ENV NIM_WIN_VERSION=$NIM_WIN_VERSION
-ENV NIM_WIN_DIR=$NIM_WIN_DIR
+ENV NIM_WIN_DIR="$WORK_DIR/$NIM_WIN_DIR"
 
 LABEL maintainer="Robin Vobruba <hoijui.quaero@gmail.com>"
 LABEL version="0.1.0"
