@@ -37,7 +37,8 @@ ENV PATH="$NIM_BINS:${PATH}"
 # for example on the command line with:
 # docker build . --build-arg NIM_VERSION=some_value # ... the rest of the build command is omitted
 # NOTE This is replaced by the 'inject-dockerfile' script.
-ARG NIM_VERSION="1.4.x"
+ARG NIM_VERSION="REPLACE_ME"
+ARG GIT_VERSION="REPLACE_ME"
 
 # Downloads and extracts the win64 version of nim.
 # We need this for some DLL dependencies at runtime
@@ -58,5 +59,5 @@ RUN echo "Installed win64 Nim version: NIM_WIN_VERSION=$NIM_WIN_VERSION"
 RUN echo "Installed win64 Nim dir:     NIM_WIN_DIR='$NIM_WIN_DIR'"
 
 LABEL maintainer="Robin Vobruba <hoijui.quaero@gmail.com>"
-LABEL version="0.1.0"
+LABEL version="$GIT_VERSION"
 LABEL description="A CI base image when building nim(lang) packages for Linux (native compilation) and Windows (cross compilation)."

@@ -10,16 +10,18 @@ set -Eeuo pipefail
 #set -Eeu
 
 script_dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+proj_dir="$(cd "$script_dir"/..; pwd)"
+build_dir="$proj_dir/build"
 
-APP_NAME="Dockerfile Variable Injector"
+APP_NAME="Docker Image Builder"
 
 function print_help() {
 
 	script_name="$(basename "$0")"
-	echo "$APP_NAME - Get latest Nim version and inject it into Dockerfile_REPLACED"
+	echo "$APP_NAME - Builds this repos docker image."
 	echo
 	echo "Usage:"
-	echo "         $script_name [OPTIONS]"
+	echo "  $script_name [OPTIONS]"
 	echo "Options:"
 	echo "  -h, --help              Show this usage info and exit"
 }
@@ -43,11 +45,12 @@ do
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-NIM_VERSION="$("$script_dir/nim-version")"
-echo "NIM_VERSION=\"$NIM_VERSION\""
-if [ -z "$NIM_VERSION" ]
-then
-	exit 33
-fi
-sed -e "s/ARG NIM_VERSION=.*/ARG NIM_VERSION=\"$NIM_VERSION\"/g" \
-	< Dockerfile > Dockerfile_REPLACED
+cd "$proj_dir"
+
+# generate Dockerfile_REPLACED
+"$script_dir/inject-dockerfile"
+
+# build the docker image
+docker -D -l debug \
+	build . --file "$build_dir/Dockerfile_REPLACED"
+

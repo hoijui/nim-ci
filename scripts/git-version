@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2021 Robin Vobruba <hoijui.quaero@gmail.com>
+#
+# SPDX-License-Identifier: Unlicense
+
+# Exit immediately on each error and unset variable;
+# see: https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+#set -Eeu
+
+APP_NAME="Git Version Printer"
+empty_on_error=false
+
+function print_help() {
+
+	script_name="$(basename "$0")"
+	echo "$APP_NAME - Compiles a git based version string for the project."
+	echo "It is based on 'git describe'"
+	echo
+	echo "Usage:"
+	echo "  $script_name [OPTIONS] [repo-dir]"
+	echo "Options:"
+	echo "  -h, --help              Show this usage info and exit"
+	echo "  -e, --empty-on-error    Return an empty string, instead of an error, when the supplied dir is not a valid git repo"
+	echo "Examples:"
+	echo "  $script_name"
+	echo "  $script_name rel/path/to/repo"
+	echo "  $script_name --help"
+	echo "  $script_name -e"
+}
+
+# read command-line args
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+	arg="$1"
+	shift # past arg
+
+	case "$arg" in
+		-h|--help)
+			print_help
+			exit 0
+			;;
+		-e|--empty-on-error)
+			empty_on_error=true
+			;;
+		*) # non-/unknown option
+			POSITIONAL+=("$arg") # save it in an array for later
+			;;
+	esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+repo_dir="${1:-.}"
+
+if [ ! -e "$repo_dir/.git" ]
+then
+	if $empty_on_error
+	then
+		exit 0
+	fi
+	>&2 echo "ERROR: Not a valid git repo: '$repo_dir'"
+	print_help
+	exit 1
+fi
+
+repo_dir_abs=$(cd "$repo_dir"; pwd)
+
+git \
+	-C "$repo_dir_abs" \
+	describe \
+	--long \
+	--dirty \
+	--candidates=99 \
+	--always \
+	--first-parent 2> /dev/null
+
