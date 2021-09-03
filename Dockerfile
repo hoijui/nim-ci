@@ -4,6 +4,8 @@
 
 FROM debian:latest
 
+ARG HOME="/root"
+RUN pwd
 # ARG WORK_DIR="$HOME"
 # WORKDIR "$WORK_DIR"
 
