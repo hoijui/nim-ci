@@ -34,10 +34,10 @@ ENV NIM_BINS="$HOME/.nimble/bin"
 ENV PATH="$NIM_BINS:${PATH}"
 
 # This can be set from outside,
-# for exampel on the command line with:
-# docker build --build-arg NIM_VERSION=some_value # ... the rest of the build command is omitted
-# NOTE This is replaced by the inject-dockerfile script.
-# ARG NIM_VERSION "1.4.8"
+# for example on the command line with:
+# docker build . --build-arg NIM_VERSION=some_value # ... the rest of the build command is omitted
+# NOTE This is replaced by the 'inject-dockerfile' script.
+# ARG NIM_VERSION="1.4.8"
 ARG NIM_VERSION="1.4.x"
 
 # Downloads and extracts the win64 version of nim.
