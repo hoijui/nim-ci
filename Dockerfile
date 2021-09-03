@@ -4,8 +4,8 @@
 
 FROM debian:latest
 
-# ENV WORKDIR="$HOME"
-# WORKDIR "$WORKDIR"
+# ARG WORK_DIR="$HOME"
+# WORKDIR "$WORK_DIR"
 
 RUN apt-get update
 
