@@ -27,6 +27,8 @@ RUN curl "https://nim-lang.org/choosenim/init.sh" \
 	--output "choosenim_init.sh" \
 	-sSf
 RUN sh choosenim_init.sh -y
+ENV NIM_BINS="$HOME/.nimble/bin"
+ENV PATH="$NIM_BINS:${PATH}"
 
 # This can be set from outside,
 # for exampel on the command line with:
