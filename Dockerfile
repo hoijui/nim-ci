@@ -9,17 +9,13 @@ RUN pwd
 
 RUN apt-get update
 RUN apt-get install --no-install-recommends -y -qq \
-	cpio \
-	wget \
 	curl \
 	zip \
 	unzip \
 	ca-certificates \
 	git \
-	ccache \
 	build-essential \
-	mingw-w64 \
-	pkg-config-mingw-w64-x86-64
+	mingw-w64
 
 ARG WORK_DIR="$HOME"
 WORKDIR "$WORK_DIR"
