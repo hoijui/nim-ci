@@ -34,6 +34,39 @@ choose `hoijui/nim-ci` as the base (docker-)image.
 Then you are able to use nim and nimble for native-compiling (Linux 64bit),
 and additionally MinGW for cross-compiling (Windows 64bit).
 
-Example for GitLab-CI:
+### Example for GitLab-CI
 
-TODO
+This `.gitlab-ci.yml` file compiles the software
+for Linux and Windows (both 64bit).
+
+```yaml
+default:
+  image: hoijui/nim-ci:latest
+
+pages:
+  script:
+  - |
+    echo
+    echo "Compiling the software for Linux ..."
+    nimble -y build
+    echo
+    echo "Cross-compiling the software for Windows 64 ..."
+    nimble -y build \
+      --os:windows \
+      --cpu:amd64 \
+      --gcc.exe:/usr/bin/x86_64-w64-mingw32-gcc \
+      --gcc.linkerexe:/usr/bin/x86_64-w64-mingw32-gcc \
+      -d:release \
+      --app:console \
+      --opt:size \
+      --passL:-static \
+      --opt:speed \
+      --embedsrc \
+      --threads:on \
+      --checks:on
+  only:
+    - master
+  artifacts:
+    paths:
+    - public
+```
