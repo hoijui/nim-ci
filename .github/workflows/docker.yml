@@ -32,6 +32,17 @@ jobs:
           cat build/Dockerfile_REPLACED
           echo "############################################################"
 
+      - name: Generate Docker meta-info
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: hoijui/nim-ci
+          tags: |
+            type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
+            type=ref,event=tag
+          flavor: |
+            latest=false
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -51,4 +62,5 @@ jobs:
           push: ${{ GitHub.event_name != 'pull_request' }}
           cache-from: type=registry,ref=hoijui/nim-ci:latest
           cache-to: type=inline
-          tags: hoijui/nim-ci:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
