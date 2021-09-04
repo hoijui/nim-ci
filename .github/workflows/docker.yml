@@ -3,13 +3,15 @@
 # SPDX-License-Identifier: Unlicense
 
 name: Publish Docker image
+
 on:
   push:
     branches: [ master ]
   release:
     types: [published]
+
 jobs:
-  push_to_registry:
+  publish_docker_images:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +19,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generating build/Dockerfile_REPLACED
-        # ... by fetching latest Nim version and injecting it into Dockerfile
+        # ... by fetching latest Nim and Git versions,
+        # and injecting them into Dockerfile
         run: |
           scripts/inject-dockerfile
           echo "############################################################"
