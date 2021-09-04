@@ -70,3 +70,9 @@ pages:
     paths:
     - public
 ```
+
+### Example project (GitLab)
+
+See the [.gitlab-ci.yml](https://gitlab.com/OSEGermany/osh-tool/-/blob/master/.gitlab-ci.yml)
+of the [`osh-tool`](https://gitlab.com/OSEGermany/osh-tool)
+for a sample project that uses `nim-ci`.
