@@ -35,12 +35,15 @@ jobs:
 
       - name: Generate Docker meta-info
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v3
         with:
           images: hoijui/nim-ci
           tags: |
-            type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
+            type=raw,value=latest,enable=${{ endsWith(github.ref, 'master') }}
+            type=match,value=latest,pattern=v?([0-9]+.[0-9]+.[0-9]+),group=1
+            type=ref,event=branch
             type=ref,event=tag
+            type=sha
           flavor: |
             latest=false
 
@@ -48,7 +51,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Login to DockerHub
-        if: GitHub.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -60,7 +63,7 @@ jobs:
           file: build/Dockerfile_REPLACED
           context: .
           pull: true
-          push: ${{ GitHub.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=registry,ref=hoijui/nim-ci:latest
           cache-to: type=inline
           tags: ${{ steps.meta.outputs.tags }}
