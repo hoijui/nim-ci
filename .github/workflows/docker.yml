@@ -10,6 +10,7 @@ on:
     paths:
       - 'Dockerfile'
       - 'scripts/build'
+      - '.github/workflows/docker.yml'
     tags:
       - 'v?[0-9]+.[0-9]+.[0-9]+'
 #  release:
