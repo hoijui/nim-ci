@@ -70,7 +70,6 @@ repo_dir_abs=$(cd "$repo_dir"; pwd)
 git \
 	-C "$repo_dir_abs" \
 	describe \
-	--long \
 	--dirty \
 	--candidates=99 \
 	--always \
