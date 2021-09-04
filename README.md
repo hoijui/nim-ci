@@ -21,9 +21,11 @@ and Windows (cross compilation).
 
 * Based on [`debian:latest`](https://hub.docker.com/_/debian)
 * Uses [ChooseNim](https://github.com/dom96/choosenim) to install Nim and Nimble
-* Contains the [Windows 64bit version of Nim](https://nim-lang.org/install_windows.html) -
+* Contains the [Windows 64bit version of Nim](
+  https://nim-lang.org/install_windows.html) -
   This allows packaging required base-DLLs with the win64 binary.
-  (TODO Check if they are required for running under wine only, or also on native windows?)
+  (TODO Check if they are required for running under wine only,
+  or also on native windows?)
 
 ## Usage
 
