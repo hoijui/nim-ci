@@ -43,13 +43,15 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 NIM_GITHUB_REPO='nim-lang/Nim'
-curl -Ssf "https://github.com/$NIM_GITHUB_REPO/releases" \
-	--output 'nim_releases.html'
+tmp_html='build/nim_tags.html'
+mkdir -p "$(dirname "$tmp_html")"
+curl -Ssf "https://github.com/$NIM_GITHUB_REPO/tags" \
+	--output "$tmp_html"
 NIM_VERSION="$( \
 	grep -m1 -Eo 'archive/refs/tags/[^/]+\.tar\.gz' \
-		< 'nim_releases.html' \
+		< "$tmp_html" \
 		| sed -e 's|.*/v\?||g' -e 's|.tar.gz$||g')"
-rm 'nim_releases.html'
+rm "$tmp_html"
 
 if [ -z "$NIM_VERSION" ]
 then
