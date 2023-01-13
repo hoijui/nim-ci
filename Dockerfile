@@ -18,6 +18,7 @@ RUN apt-get install \
 	ca-certificates \
 	git \
 	build-essential \
+	pandoc \
 	mingw-w64
 
 ARG WORK_DIR="$HOME"
