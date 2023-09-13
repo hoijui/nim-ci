@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021 Robin Vobruba <hoijui.quaero@gmail.com>
+# SPDX-FileCopyrightText: 2021 - 2023 Robin Vobruba <hoijui.quaero@gmail.com>
 #
 # SPDX-License-Identifier: Unlicense
 
@@ -12,14 +12,19 @@ RUN apt-get install \
 	--no-install-recommends \
 	-y \
 	-qq \
-	curl \
-	zip \
-	unzip \
-	ca-certificates \
-	git \
 	build-essential \
+	ca-certificates \
+	curl \
+	git \
+	libpcre2-dev \
+	libssl-dev \
+	mingw-w64 \
+	musl \
+	musl-dev \
+	musl-tools \
 	pandoc \
-	mingw-w64
+	unzip \
+	zip
 
 ARG WORK_DIR="$HOME"
 WORKDIR "$WORK_DIR"
