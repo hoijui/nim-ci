@@ -74,4 +74,3 @@ git \
 	--candidates=99 \
 	--always \
 	--first-parent 2> /dev/null
-

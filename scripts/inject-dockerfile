@@ -62,4 +62,3 @@ sed \
 	-e "s/^ARG GIT_VERSION=.*/ARG GIT_VERSION=\"$GIT_VERSION\"/g" \
 	< "$proj_dir/Dockerfile" \
 	> "$build_dir/Dockerfile_REPLACED"
-
