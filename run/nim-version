@@ -47,10 +47,16 @@ tmp_html='build/nim_tags.html'
 mkdir -p "$(dirname "$tmp_html")"
 curl -Ssf "https://github.com/$NIM_GITHUB_REPO/tags" \
 	--output "$tmp_html"
+# NOTE Semver sorting trickery taken from StackOverflow:
+#      <https://stackoverflow.com/a/40391207/586229>
 NIM_VERSION="$( \
-	grep -m1 -Eo 'archive/refs/tags/[^/]+\.tar\.gz' \
+	grep -Eo 'archive/refs/tags/[^/]+\.tar\.gz' \
 		< "$tmp_html" \
-		| sed -e 's|.*/v\?||g' -e 's|.tar.gz$||g')"
+		| sed -e 's|.*/v\?||g; s|.tar.gz$||g' \
+		| sed '/-/!{s/$/_/;}; s/-patch/_patch/' \
+		| sort -V \
+		| sed 's/_$//; s/_patch/-patch/' \
+		| tail -1)"
 rm "$tmp_html"
 
 if [ -z "$NIM_VERSION" ]
