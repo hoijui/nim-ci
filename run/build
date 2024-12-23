@@ -52,6 +52,12 @@ cd "$proj_dir"
 "$script_dir/inject-dockerfile"
 
 # build the docker image
-docker -D -l debug \
-	build . --file "$build_dir/Dockerfile_REPLACED"
-
+echo "Building docker image "
+docker \
+	-D \
+	-l debug \
+	build \
+		--file "$build_dir/Dockerfile_REPLACED" \
+		--progress=plain \
+		"$@" \
+		.
