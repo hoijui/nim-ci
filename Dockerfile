@@ -1,17 +1,13 @@
-# SPDX-FileCopyrightText: 2021 - 2023 Robin Vobruba <hoijui.quaero@gmail.com>
+# SPDX-FileCopyrightText: 2021-2024 Robin Vobruba <hoijui.quaero@gmail.com>
 #
 # SPDX-License-Identifier: Unlicense
 
-FROM debian:latest
+FROM bitnami/minideb:bookworm
 
 ARG HOME="/root"
 RUN pwd
 
-RUN apt-get update
-RUN apt-get install \
-	--no-install-recommends \
-	-y \
-	-qq \
+RUN install_packages \
 	build-essential \
 	ca-certificates \
 	curl \
