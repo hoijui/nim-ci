@@ -20,7 +20,8 @@ function print_help() {
 	echo "Usage:"
 	echo "  $script_name [OPTIONS]"
 	echo "Options:"
-	echo "  -h, --help              Show this usage info and exit"
+	echo "  -h, --help"
+	echo "    Show this usage info and exit"
 }
 
 # read command-line args
