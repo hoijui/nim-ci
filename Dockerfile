@@ -12,7 +12,7 @@ RUN install_packages \
 	ca-certificates \
 	curl \
 	git \
-	libpcre2-dev \
+	libpcre3-dev \
 	libssl-dev \
 	mingw-w64 \
 	musl \
