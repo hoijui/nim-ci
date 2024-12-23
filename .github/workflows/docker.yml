@@ -9,7 +9,7 @@ on:
     branches: [ master ]
     paths:
       - 'Dockerfile'
-      - 'scripts/*'
+      - 'run/*'
       - '.github/workflows/docker.yml'
     tags:
       - 'v?[0-9]+.[0-9]+.[0-9]+'
@@ -28,7 +28,7 @@ jobs:
         # ... by fetching latest Nim and Git versions,
         # and injecting them into Dockerfile
         run: |
-          scripts/inject-dockerfile
+          run/inject-dockerfile
           echo "############################################################"
           cat build/Dockerfile_REPLACED
           echo "############################################################"
